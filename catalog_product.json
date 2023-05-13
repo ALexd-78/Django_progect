@@ -1,0 +1,41 @@
+[
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "банан",
+      "description": "производство Эквадор",
+      "image": "",
+      "category": "фрукты",
+      "unit_price": 80,
+      "creation_date": "2023-05-11",
+      "modified_date": "2023-05-11"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "картофель",
+      "description": "производство Краснодар",
+      "image": "",
+      "category": "овощ",
+      "unit_price": 40,
+      "creation_date": "2023-05-11",
+      "modified_date": "2023-05-11"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "name": "помидор",
+      "description": "производство Азербайджан",
+      "image": "",
+      "category": "овощ",
+      "unit_price": 200,
+      "creation_date": "2023-05-11",
+      "modified_date": "2023-05-11"
+    }
+  }
+]
