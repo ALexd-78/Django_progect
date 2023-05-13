@@ -1,0 +1,26 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 14,
+    "fields": {
+      "name": "овощи",
+      "description": "сельскохозяйственные продукты"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 15,
+    "fields": {
+      "name": "ягоды",
+      "description": "сельскохозяйственные продукты"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 16,
+    "fields": {
+      "name": "фрукты",
+      "description": "сельскохозяйственные продукты"
+    }
+  }
+]
