@@ -131,6 +131,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 
+
 #сюда идёт загрузка любых файлов от пользователя
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
