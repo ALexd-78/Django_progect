@@ -6,7 +6,7 @@ class Product(models.Model):
     name = models.CharField(max_length=50, verbose_name='Наименование')
     description = models.TextField(verbose_name='Описание')
     image = models.ImageField(upload_to='products/', verbose_name='Изображение', **NULLABLE)
-    category = models.CharField(max_length=50, verbose_name='Категория')
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Категория')
     unit_price = models.IntegerField(verbose_name='Цена за покупку')
     creation_date = models.DateField(verbose_name='Дата создания')
     modified_date = models.DateField(verbose_name='Дата последнего изменения')
@@ -18,19 +18,20 @@ class Product(models.Model):
         '''Класс мета-настроек'''
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
-        ordering = ('name',) #сортировка, '-name' - сортировка в обратном порядке
+        ordering = ('name',)  # сортировка, '-name' - сортировка в обратном порядке
 
 
 class Category(models.Model):
     name = models.CharField(max_length=50, verbose_name='Наименование')
     description = models.TextField(verbose_name='Описание')
 
-
     def __str__(self):
-        return f'{self.name} {self.description}'
+        return f'{self.name}'
 
     class Meta:
         '''Класс мета-настроек'''
         verbose_name = 'категория'
         verbose_name_plural = 'категории'
-        ordering = ('name',) #сортировка, '-name' - сортировка в обратном порядке
+        ordering = ('name',)  # сортировка, '-name' - сортировка в обратном порядке
+
+
