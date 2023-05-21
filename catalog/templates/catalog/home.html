@@ -2,18 +2,6 @@
 
 {% block content %}
     {% for product in product_list %}
-        <div class="col-lg-4">
-            <div class="card w-75 my-2" style="width: 18rem;">
-                <img src="/media/{{ product.image }}" style="max-width:100%;" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text">{{ product.description|truncatechars:100 }}</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Цена: {{ product.unit_price }} p</li>
-                    <li class="list-group-item">Дата создания: {{ product.creation_date }}</li>
-                    <li class="list-group-item">Дата последнего изменения: {{ product.modified_date }}</li>
-            </div>
-        </div><!-- /.col-lg-4 -->
+       {% include 'catalog/includes/inc_product_card.html' %}
     {% endfor %}
 {% endblock %}
