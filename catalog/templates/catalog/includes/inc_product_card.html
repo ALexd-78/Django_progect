@@ -3,11 +3,15 @@
         <img src="/media/{{ product.image }}" style="max-width:100%;" alt="...">
         <div class="card-body">
             <h5 class="card-title">{{ product.name }}</h5>
+
             <p class="card-text">{{ product.description|truncatechars:100 }}</p>
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Цена: {{ product.unit_price }} p</li>
             <li class="list-group-item">Дата создания: {{ product.creation_date }}</li>
             <li class="list-group-item">Дата последнего изменения: {{ product.modified_date }}</li>
+            <div class="card-footer">
+                <a href="..." class='btn btn-primary'>Детали >></a>
+            </div>
     </div>
 </div><!-- /.col-lg-4 -->

@@ -32,3 +32,12 @@ def contacts(request):
 
     return render(request, 'catalog/contacts.html', context)
 
+
+def product(request, pk):
+    '''контроллер постраничного вывода информации о продукте'''
+    product_item = Product.objects.get(pk=pk)
+    context = {
+        'object': product_item,
+        'title': product_item
+    }
+    return render(request, 'catalog/product.html', context)
