@@ -3,13 +3,6 @@ from django.shortcuts import render
 from catalog.models import Product
 
 
-# def index(request):
-#     context = {
-#         'product_list': Product.objects.all()
-#     }
-#     return render(request, 'catalog/index.html', context)
-
-
 def home(request):
     '''контроллер домашней страницы'''
     context = {
