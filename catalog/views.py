@@ -1,17 +1,36 @@
 from django.shortcuts import render
 
-def get_home(request):
+from catalog.models import Product
+
+
+def home(request):
     '''контроллер домашней страницы'''
-    return render(request, 'catalog/home.html')
+    context = {
+            'product_list': Product.objects.all()
+        }
+    return render(request, 'catalog/home.html', context)
 
 
-def get_contacts(request):
+def contacts(request):
     '''контроллер контактов'''
     if request.method == 'POST':
         name = request.POST.get('name', '')
         phone = request.POST.get('phone', '')
         message = request.POST.get('message', '')
         print(f'User {name} with phone {phone} send message: {message}')
-    return render(request, 'catalog/contacts.html')
+
+    context = {
+        'title': 'Контакты'
+    }
+
+    return render(request, 'catalog/contacts.html', context)
 
 
+def product(request, pk):
+    '''контроллер постраничного вывода информации о продукте'''
+    product_item = Product.objects.get(pk=pk)
+    context = {
+        'object': product_item,
+        'title': product_item
+    }
+    return render(request, 'catalog/product.html', context)

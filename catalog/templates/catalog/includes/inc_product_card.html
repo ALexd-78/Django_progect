@@ -1,0 +1,19 @@
+{% load catalog_tags %}
+<div class="col-lg-4">
+    <div class="card w-75 my-2" style="max-width:100%;" alt="...">
+        <img src="{% mediapath product.image %}" />
+{#        <img src="{{ product.image|mediapath }}" />#}
+        <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+
+            <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Цена: {{ product.unit_price }} p</li>
+            <li class="list-group-item">Дата создания: {{ product.creation_date }}</li>
+            <li class="list-group-item">Дата последнего изменения: {{ product.modified_date }}</li>
+            <div class="card-footer">
+                <a href="..." class='btn btn-secondary'>Детали >></a>
+            </div>
+    </div>
+</div><!-- /.col-lg-4 -->
