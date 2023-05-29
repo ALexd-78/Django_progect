@@ -1,14 +1,22 @@
 from django.shortcuts import render
+from django.views import generic
 
 from catalog.models import Product
 
 
-def home(request):
+class ProductListView(generic.ListView):
     '''контроллер домашней страницы'''
-    context = {
-            'product_list': Product.objects.all()
-        }
-    return render(request, 'catalog/home.html', context)
+    model = Product
+
+
+class ProductDetailView(generic.DetailView):
+    '''контроллер постраничного вывода информации о продукте'''
+    model = Product
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['title'] = context_data['object']
+        return context_data
 
 
 def contacts(request):
@@ -24,13 +32,3 @@ def contacts(request):
     }
 
     return render(request, 'catalog/contacts.html', context)
-
-
-def product(request, pk):
-    '''контроллер постраничного вывода информации о продукте'''
-    product_item = Product.objects.get(pk=pk)
-    context = {
-        'object': product_item,
-        'title': product_item
-    }
-    return render(request, 'catalog/product.html', context)
