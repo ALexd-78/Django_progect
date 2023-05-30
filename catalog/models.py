@@ -35,3 +35,20 @@ class Category(models.Model):
         ordering = ('name',)  # сортировка, '-name' - сортировка в обратном порядке
 
 
+class Blog(models.Model):
+    heading = models.CharField(max_length=150, verbose_name='Заголовок')
+    slug = models.CharField(max_length=150, verbose_name='Слаг')
+    content = models.TextField(verbose_name='Содержимое')
+    preview = models.ImageField(upload_to='blogs/', verbose_name='Изображение', **NULLABLE)
+    create_date = models.DateField(verbose_name='Дата создания')
+    is_publication = models.BooleanField(default=True, verbose_name='Опубликовано')
+    count_views = models.IntegerField(verbose_name='Количество просмотров')
+
+    def __str__(self):
+        return f'{self.heading}'
+
+    class Meta:
+        '''Класс мета-настроек'''
+        verbose_name = 'Заголовок'
+        verbose_name_plural = 'Заголовки'
+        ordering = ('heading',)

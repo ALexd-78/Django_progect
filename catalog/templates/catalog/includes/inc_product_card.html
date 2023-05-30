@@ -1,8 +1,8 @@
 {% load catalog_tags %}
 <div class="col-lg-4">
     <div class="card w-75 my-2" style="max-width:100%;" alt="...">
-        <img src="{% mediapath object.image %}" />
-{#        <img src="{{ object.image|mediapath }}" />#}
+        <img src="{% mediapath object.image %}"/>
+        {#        <img src="{{ object.image|mediapath }}" />#}
         <div class="card-body">
             <h5 class="card-title">{{ object.name }}</h5>
 
@@ -13,7 +13,7 @@
             <li class="list-group-item">Дата создания: {{ object.creation_date }}</li>
             <li class="list-group-item">Дата последнего изменения: {{ object.modified_date }}</li>
             <div class="card-footer">
-                <p><a class="btn btn-secondary" href="{% url 'catalog:product_item' object.pk %}}" role="button">Детали >></a></p>
+                <p><a class="btn btn-secondary" href="{% url 'catalog:product_item' object.pk %}" role="button">Детали>></a></p>
             </div>
     </div>
 </div><!-- /.col-lg-4 -->
