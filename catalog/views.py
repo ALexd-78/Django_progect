@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
 
-from catalog.models import Product
+from catalog.models import Product, Blog
 
 
 class ProductListView(generic.ListView):
@@ -32,3 +32,18 @@ def contacts(request):
     }
 
     return render(request, 'catalog/contacts.html', context)
+
+
+class BlogListView(generic.ListView):
+    '''контроллер страницы со статьями'''
+    model = Blog
+
+
+class BlogDetailView(generic.DetailView):
+    '''контроллер постраничного вывода информации о статье'''
+    model = Blog
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['title'] = context_data['blog']
+        return context_data
