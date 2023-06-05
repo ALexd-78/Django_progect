@@ -1,19 +1,19 @@
 {% load catalog_tags %}
 <div class="col-lg-4">
     <div class="card w-75 my-2" style="max-width:100%;" alt="...">
-        <img src="{% mediapath product.image %}" />
-{#        <img src="{{ product.image|mediapath }}" />#}
+        <img src="{% mediapath object.image %}"/>
+        {#        <img src="{{ object.image|mediapath }}" />#}
         <div class="card-body">
-            <h5 class="card-title">{{ product.name }}</h5>
+            <h5 class="card-title">{{ object.name }}</h5>
 
-            <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+            <p class="card-text">{{ object.description|truncatechars:100 }}</p>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Цена: {{ product.unit_price }} p</li>
-            <li class="list-group-item">Дата создания: {{ product.creation_date }}</li>
-            <li class="list-group-item">Дата последнего изменения: {{ product.modified_date }}</li>
+            <li class="list-group-item">Цена: {{ object.unit_price }} p</li>
+            <li class="list-group-item">Дата создания: {{ object.creation_date }}</li>
+            <li class="list-group-item">Дата последнего изменения: {{ object.modified_date }}</li>
             <div class="card-footer">
-                <a href="..." class='btn btn-secondary'>Детали >></a>
+                <p><a class="btn btn-secondary" href="{% url 'catalog:product_item' object.pk %}" role="button">Детали>></a></p>
             </div>
     </div>
 </div><!-- /.col-lg-4 -->

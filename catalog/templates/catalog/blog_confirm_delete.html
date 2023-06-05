@@ -1,0 +1,18 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    Уверены, что хотите удалить статью "{{ blog }}"?<br>
+                    <input type="submit" class="btn btn-outline-danger mt-2" value="Уверен">
+                </form>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'catalog:blog_list' %}" class='btn btn-primary'><< Назад</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
