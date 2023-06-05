@@ -26,6 +26,10 @@
                         <td>{{ blog.create_date }}</td>
                     </tr>
                     <tr>
+                        <td>Опубликовано</td>
+                        <td>{{ blog.is_publication }}</td>
+                    </tr>
+                    <tr>
                         <td>Количество просмотров</td>
                         <td>{{ blog.count_views }}</td>
                     </tr>
@@ -33,6 +37,7 @@
             </div>
             <div class="card-footer">
                 <a href="{% url 'catalog:blog_list' %}" class='btn btn-secondary'><< Назад</a>
+
             </div>
         </div>
     </div>

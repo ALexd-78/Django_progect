@@ -47,6 +47,10 @@ class Blog(models.Model):
     def __str__(self):
         return f'{self.heading}'
 
+    def delete(self, *args, **kwargs):
+        self.is_publication = False
+        self.save()
+
     class Meta:
         '''Класс мета-настроек'''
         verbose_name = 'Статья'

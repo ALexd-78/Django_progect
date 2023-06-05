@@ -21,3 +21,4 @@ class BlogAdmin(admin.ModelAdmin):
     list_display = ('id', 'heading', 'create_date', 'count_views')
     search_fields = ('heading', 'slug')
     list_filter = ('is_publication', 'create_date', 'count_views')
+    prepopulated_fields = {'slug': ('heading',)}
