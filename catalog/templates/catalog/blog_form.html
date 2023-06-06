@@ -7,17 +7,20 @@
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <input type="submit" class="btn btn-success" value="{% if blog %}Сохранить{% else %}Создать{% endif %}">
+                    <input type="submit" class="btn btn-success"
+                           value="{% if blog %}Сохранить{% else %}Создать{% endif %}">
                 </form>
             </div>
             <div class="card-footer">
                 <a href="{% url 'catalog:blog_list' %}" class='btn btn-primary'><< Назад</a>
-                <a href="{% url 'catalog:toggle_publication' blog.pk %}" class='btn btn-warning float-right'>
+                {% if blog %}
+                    <a href="{% url 'catalog:toggle_publication' blog.pk %}" class='btn btn-warning float-right'>
                     {% if blog.is_publication %}
                         Снять с публикации
                     {% else %}
                         Опубликовать
                     {% endif %}
+                {% endif %}
                 </a>
             </div>
         </div>
