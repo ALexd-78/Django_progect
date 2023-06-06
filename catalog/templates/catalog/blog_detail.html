@@ -27,7 +27,13 @@
                     </tr>
                     <tr>
                         <td>Опубликовано</td>
-                        <td>{{ blog.is_publication }}</td>
+                        <td>
+                            {% if blog.is_publication %}
+                                Да
+                            {% else %}
+                                Нет
+                            {% endif %}
+                        </td>
                     </tr>
                     <tr>
                         <td>Количество просмотров</td>
