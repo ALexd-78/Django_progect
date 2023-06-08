@@ -9,7 +9,7 @@
             <p class="card-text">{{ blog.content|truncatechars:100 }}</p>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Слаг: {{ blog.slug }} p</li>
+            <li class="list-group-item">Слаг: {{ blog.slug }}</li>
             <li class="list-group-item">Дата создания: {{ blog.create_date }}</li>
             <li class="list-group-item">Опубликовано:
                 {% if blog.is_publication %}
