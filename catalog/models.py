@@ -11,8 +11,8 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/', verbose_name='Изображение', **NULLABLE)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Категория')
     unit_price = models.IntegerField(verbose_name='Цена за покупку')
-    creation_date = models.DateField(verbose_name='Дата создания')
-    modified_date = models.DateField(verbose_name='Дата последнего изменения')
+    creation_date = models.DateField(auto_now_add=True, verbose_name='Дата создания')
+    modified_date = models.DateField(auto_now=True, verbose_name='Дата последнего изменения')
 
     def __str__(self):
         return f'{self.name}, {self.unit_price}, {self.category}'
@@ -43,7 +43,7 @@ class Blog(models.Model):
     slug = models.CharField(max_length=150, verbose_name='Слаг', blank=True, unique=True)
     content = models.TextField(verbose_name='Содержимое')
     preview = models.ImageField(upload_to='blogs/', verbose_name='Изображение', **NULLABLE)
-    create_date = models.DateField(verbose_name='Дата создания')
+    create_date = models.DateField(auto_now_add=True, verbose_name='Дата создания')
     is_publication = models.BooleanField(default=True, verbose_name='Опубликовано')
     count_views = models.IntegerField(default=0, verbose_name='Количество просмотров')
 
