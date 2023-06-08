@@ -1,4 +1,7 @@
 from django.db import models
+from django.urls import reverse
+
+from catalog.services.utils import unique_slugify
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -37,7 +40,7 @@ class Category(models.Model):
 
 class Blog(models.Model):
     heading = models.CharField(max_length=150, verbose_name='Заголовок')
-    slug = models.CharField(max_length=150, verbose_name='Слаг', **NULLABLE)
+    slug = models.CharField(max_length=150, verbose_name='Слаг', blank=True, unique=True)
     content = models.TextField(verbose_name='Содержимое')
     preview = models.ImageField(upload_to='blogs/', verbose_name='Изображение', **NULLABLE)
     create_date = models.DateField(verbose_name='Дата создания')
@@ -50,6 +53,18 @@ class Blog(models.Model):
     def delete(self, *args, **kwargs):
         self.is_publication = False
         self.save()
+
+    def get_absolute_url(self):
+        return reverse('blog_detail', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        """
+        Сохранение полей модели при их отсутствии заполнения
+        """
+        if not self.slug:
+            self.slug = unique_slugify(self, self.heading)
+        super().save(*args, **kwargs)
+
 
     class Meta:
         '''Класс мета-настроек'''
