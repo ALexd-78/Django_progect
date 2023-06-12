@@ -63,7 +63,11 @@ class Blog(models.Model):
         """
         if not self.slug:
             self.slug = unique_slugify(self, self.heading)
-        super().save(*args, **kwargs)
+        else:
+            # del(self.slug)
+            self.slug = unique_slugify(self, self.heading)
+
+        return super().save(*args, **kwargs)
 
 
     class Meta:
