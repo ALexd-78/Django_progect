@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 
+from catalog.forms import ProductForm, BlogForm
 from catalog.models import Product, Blog
 
 
@@ -13,6 +14,12 @@ class ProductListView(generic.ListView):
     }
 
 
+    def get_queryset(self):
+        '''вывод с фильтрацией'''
+        queryset = super().get_queryset()
+        queryset = queryset.filter(is_publicate=True)
+        return queryset
+
 class ProductDetailView(generic.DetailView):
     '''контроллер постраничного вывода информации о продукте'''
     model = Product
@@ -21,6 +28,25 @@ class ProductDetailView(generic.DetailView):
         context_data = super().get_context_data(**kwargs)
         context_data['title'] = context_data['object']
         return context_data
+
+
+class ProductCreateView(generic.CreateView):
+    model = Product
+    form_class = ProductForm
+    # fields = ('name', 'description', 'category', 'unit_price',)
+    success_url = reverse_lazy('catalog:product_list')
+
+
+class ProductUpdateView(generic.UpdateView):
+    model = Product
+    form_class = ProductForm
+    # fields = ('name', 'description', 'category', 'unit_price',)
+    success_url = reverse_lazy('catalog:product_list')
+
+
+class ProductDeleteView(generic.DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:product_list')
 
 
 class BlogListView(generic.ListView):
@@ -57,13 +83,15 @@ class BlogDetailView(generic.DetailView):
 
 class BlogCreateView(generic.CreateView):
     model = Blog
-    fields = ('heading', 'content', 'preview', )
+    form_class = BlogForm
+    # fields = ('heading', 'content', 'preview', )
     success_url = reverse_lazy('catalog:blog_list')
 
 
 class BlogUpdateView(generic.UpdateView):
     model = Blog
-    fields = ('heading', 'slug', 'content', 'preview', )
+    form_class = BlogForm
+    # fields = ('heading', 'slug', 'content', 'preview', )
 
     def get_success_url(self):
         return reverse('catalog:blog_item', kwargs={'pk': self.object.pk})
@@ -83,6 +111,14 @@ def toggle_publication(request, pk):
         blog_item.is_publication = True
     blog_item.save()
     return redirect(reverse('catalog:blog_update', args=[blog_item.pk]))
+def toggle_publicate(request, pk):
+    product_item = get_object_or_404(Product, pk=pk)
+    if product_item.is_publicate:
+        product_item.is_publicate = False
+    else:
+        product_item.is_publicate = True
+    product_item.save()
+    return redirect(reverse('catalog:product_update', args=[product_item.pk]))
 
 def contacts(request):
     '''контроллер контактов'''

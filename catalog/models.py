@@ -14,8 +14,14 @@ class Product(models.Model):
     creation_date = models.DateField(auto_now_add=True, verbose_name='Дата создания')
     modified_date = models.DateField(auto_now=True, verbose_name='Дата последнего изменения')
 
+    is_publicate = models.BooleanField(default=True, verbose_name='Опубликовано', **NULLABLE)
+
     def __str__(self):
         return f'{self.name}, {self.unit_price}, {self.category}'
+
+    def delete(self, *args, **kwargs):
+        self.is_publication = False
+        self.save()
 
     class Meta:
         '''Класс мета-настроек'''
