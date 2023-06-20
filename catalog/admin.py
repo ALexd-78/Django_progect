@@ -1,10 +1,11 @@
 from django.contrib import admin
 
-from catalog.models import Product, Category, Blog
+from catalog.models import Product, Category, Blog, Version
 
 # admin.site.register(Product)
 # admin.site.register(Category)
 # admin.site.register(Blog)
+# admin.site.register(Version)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -22,3 +23,10 @@ class BlogAdmin(admin.ModelAdmin):
     search_fields = ('heading', 'slug')
     list_filter = ('is_publication', 'create_date', 'count_views')
     prepopulated_fields = {'slug': ('heading',)}
+
+
+@admin.register(Version)
+class VersionAdmin(admin.ModelAdmin):
+    list_display = ('product', 'name', 'number', 'is_active')
+    search_fields = ('product', 'name', 'number',)
+    list_filter = ('name', 'is_active')
