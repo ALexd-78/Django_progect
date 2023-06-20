@@ -8,20 +8,12 @@
                     {% csrf_token %}
                     {{ form.as_p }}
                     <input type="submit" class="btn btn-success"
-                           value="{% if product %}Сохранить{% else %}Создать{% endif %}">
+                           value="{% if object %}Сохранить{% else %}Создать{% endif %}">
                 </form>
             </div>
             <div class="card-footer">
                 <a href="{% url 'catalog:home' %}" class='btn btn-secondary'><< Назад</a>
-                {% if product %}
-                    <a href="{% url 'catalog:toggle_publicate' product.pk %}" class='btn btn-warning float-right'>
-                    {% if product.is_publicate %}
-                        Снять с публикации
-                    {% else %}
-                        Опубликовать
-                    {% endif %}
-                {% endif %}
-                </a>
+
             </div>
         </div>
     </div>

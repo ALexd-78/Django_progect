@@ -1,9 +1,10 @@
+from django.forms import inlineformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 
-from catalog.forms import ProductForm, BlogForm
-from catalog.models import Product, Blog
+from catalog.forms import ProductForm, BlogForm, VersionForm
+from catalog.models import Product, Blog, Version
 
 
 class ProductListView(generic.ListView):
@@ -13,12 +14,11 @@ class ProductListView(generic.ListView):
         'title': 'Главная'
     }
 
-
     def get_queryset(self):
-        '''вывод с фильтрацией'''
         queryset = super().get_queryset()
-        queryset = queryset.filter(is_publicate=True)
+        queryset = queryset.prefetch_related('version_set')
         return queryset
+
 
 class ProductDetailView(generic.DetailView):
     '''контроллер постраничного вывода информации о продукте'''
@@ -31,6 +31,7 @@ class ProductDetailView(generic.DetailView):
 
 
 class ProductCreateView(generic.CreateView):
+    '''контроллер создания продукта'''
     model = Product
     form_class = ProductForm
     # fields = ('name', 'description', 'category', 'unit_price',)
@@ -38,13 +39,35 @@ class ProductCreateView(generic.CreateView):
 
 
 class ProductUpdateView(generic.UpdateView):
+    '''контроллер изменения продукта'''
     model = Product
     form_class = ProductForm
+    template_name = 'catalog/product_form_with_formset.html'
     # fields = ('name', 'description', 'category', 'unit_price',)
     success_url = reverse_lazy('catalog:product_list')
 
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        VersionFormset =  inlineformset_factory(Product, Version, form=VersionForm, extra=1)
+        if self.request.method == 'POST':
+            context_data['formset'] = VersionFormset(self.request.POST, instance=self.object)
+        else:
+            context_data['formset'] = VersionFormset(instance=self.object)
+        return context_data
+
+    def form_valid(self, form):
+        context_data = self.get_context_data()
+        formset = context_data['formset']
+        self.object = form.save()
+        if formset.is_valid():
+            formset.instance = self.object
+            formset.save()
+        return super().form_valid(form)
+
+
 
 class ProductDeleteView(generic.DeleteView):
+    '''контроллер удаления продукта'''
     model = Product
     success_url = reverse_lazy('catalog:product_list')
 
@@ -82,6 +105,7 @@ class BlogDetailView(generic.DetailView):
 
 
 class BlogCreateView(generic.CreateView):
+    '''контроллер создания статьи'''
     model = Blog
     form_class = BlogForm
     # fields = ('heading', 'content', 'preview', )
@@ -89,6 +113,7 @@ class BlogCreateView(generic.CreateView):
 
 
 class BlogUpdateView(generic.UpdateView):
+    '''контроллер редактирования статьи'''
     model = Blog
     form_class = BlogForm
     # fields = ('heading', 'slug', 'content', 'preview', )
@@ -99,11 +124,13 @@ class BlogUpdateView(generic.UpdateView):
 
 
 class BlogDeleteView(generic.DeleteView):
+    '''контроллер удаления статьи'''
     model = Blog
     success_url = reverse_lazy('catalog:blog_list')
 
 
 def toggle_publication(request, pk):
+    '''контроллер вывода статьи с фильтрацией'''
     blog_item = get_object_or_404(Blog, pk=pk)
     if blog_item.is_publication:
         blog_item.is_publication = False
@@ -111,7 +138,9 @@ def toggle_publication(request, pk):
         blog_item.is_publication = True
     blog_item.save()
     return redirect(reverse('catalog:blog_update', args=[blog_item.pk]))
+
 def toggle_publicate(request, pk):
+    '''контроллер вывода продукта с фильтрацией'''
     product_item = get_object_or_404(Product, pk=pk)
     if product_item.is_publicate:
         product_item.is_publicate = False

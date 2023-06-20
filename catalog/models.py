@@ -81,3 +81,19 @@ class Blog(models.Model):
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
         ordering = ('heading',)
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, verbose_name='продукт', null=True)
+    number = models.CharField(max_length=50, verbose_name='номер версии')
+    name = models.CharField(max_length=150, verbose_name='название версии')
+    is_active = models.BooleanField(default=True, verbose_name='текущая версия')
+
+    def __str__(self):
+        return f'{self.name} ({self.product})'
+
+    class Meta:
+        '''Класс мета-настроек'''
+        verbose_name = 'версия'
+        verbose_name_plural = 'версии'
+        ordering = ('name',)  # сортировка, '-name' - сортировка в обратном порядке

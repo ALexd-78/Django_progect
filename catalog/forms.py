@@ -1,7 +1,6 @@
 from  django import forms
 
-from catalog.models import Product, Blog
-
+from catalog.models import Product, Blog, Version
 
 valid_works = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
 
@@ -45,3 +44,10 @@ class BlogForm(FormStyleMixin, forms.ModelForm):
         # fields = '__all__'
         # fields = ('name', 'description', 'category', 'unit_price',)
         exclude = ('is_publication',)
+
+
+class VersionForm(FormStyleMixin, forms.ModelForm):
+
+    class Meta:
+        model = Version
+        fields = '__all__'
