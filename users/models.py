@@ -12,5 +12,8 @@ class User(AbstractUser):
     phone = models.CharField(max_length=35, verbose_name='телефон', **NULLABLE)
     country = models.CharField(max_length=50, verbose_name='страна', **NULLABLE)
 
+    token = models.CharField(max_length=200, verbose_name='токен', **NULLABLE)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='время создания токена', **NULLABLE)
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
