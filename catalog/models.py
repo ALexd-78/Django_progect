@@ -16,6 +16,7 @@ class Product(models.Model):
 
     is_publicate = models.BooleanField(default=True, verbose_name='Опубликовано', **NULLABLE)
 
+
     def __str__(self):
         return f'{self.name}, {self.unit_price}, {self.category}'
 

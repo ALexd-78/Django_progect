@@ -1,11 +1,15 @@
 from django.conf import settings
+from django.contrib.auth import login
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, \
+    PasswordResetCompleteView
 from django.core.mail import send_mail
-from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 
-from users.forms import UserForm, UserRegisterForm
+from users.forms import UserForm, UserRegisterForm, CustomAuthenticationForm, CustomPasswordResetForm, \
+    CustomResetConfirmForm
 from users.models import User
 
 
@@ -38,6 +42,21 @@ class RegisterView(generic.CreateView):
         )
         new_user.save()
         return redirect('users:email_confirmation_sent')
+
+
+class ProfileUpdateView(generic.UpdateView):
+    model = User
+    form_class = UserForm
+    success_url = reverse_lazy('users:profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Страница пользователя: {self.object.email}'
+        return context
+
 
 class UserConfirmEmailView(generic.View):
     def get(self, request, token):
@@ -76,15 +95,38 @@ class EmailConfirmationFailedView(generic.TemplateView):
         context['title'] = 'Ваш электронный адрес не активирован'
         return context
 
-class ProfileUpdateView(generic.UpdateView):
-    model = User
-    form_class = UserForm
-    success_url = reverse_lazy('users:profile')
 
-    def get_object(self, queryset=None):
-        return self.request.user
+class CustomLoginView(LoginView):
+    form_class = CustomAuthenticationForm
+    template_name = 'users/login.html'
+    success_url = reverse_lazy('users:login')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = f'Страница пользователя: {self.object.email}'
-        return context
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'users/password_reset_form.html'
+    form_class = CustomPasswordResetForm
+    success_url = reverse_lazy('users:password_reset_done')
+    email_template_name = 'users/email_reset.html'
+    from_email = settings.EMAIL_HOST_USER
+
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    form_class = CustomResetConfirmForm
+    template_name = 'users/password_reset_confirm.html'
+    success_url = reverse_lazy('users:password_reset_complete')
+
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'users/password_reset_done.html'
+
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'users/password_reset_complete.html'
+
+
+def verify_account(request, user_pk):
+    user = get_object_or_404(User, pk=user_pk)
+    user.is_active = True
+    user.save()
+    login(request, user)
+    return redirect(to=reverse('users:login'))
