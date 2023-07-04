@@ -1,3 +1,5 @@
+import random
+
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.tokens import default_token_generator
@@ -130,3 +132,17 @@ def verify_account(request, user_pk):
     user.save()
     login(request, user)
     return redirect(to=reverse('users:login'))
+
+
+def generate_new_password(request):
+    new_password = ''.join([str(random.randint(0, 9)) for _ in range(12)])
+    send_mail(
+        subject='Ваш пароль изменён',
+        message=f'Ваш новый пароль: {new_password} ',
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[request.user.email]
+    )
+    request.user.set_password(new_password)
+    request.user.save()
+
+    return redirect(reverse('catalog:product_list'))
