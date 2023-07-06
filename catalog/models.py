@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 from catalog.services.utils import unique_slugify
+from users.models import User
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -15,6 +16,8 @@ class Product(models.Model):
     modified_date = models.DateField(auto_now=True, verbose_name='Дата последнего изменения')
 
     is_publicate = models.BooleanField(default=True, verbose_name='Опубликовано', **NULLABLE)
+
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return f'{self.name}, {self.unit_price}, {self.category}'
